@@ -1,0 +1,580 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SACC - Week 5 Implementation Planning</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 30px 15px;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #edf2f7;
+        color: #263445;
+        line-height: 1.7;
+    }
+
+    .document {
+        max-width: 1000px;
+        margin: auto;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.10);
+    }
+
+    .header {
+        background: linear-gradient(135deg, #102b4e, #176b87);
+        color: white;
+        padding: 45px 35px;
+        text-align: center;
+    }
+
+    .header .company {
+        color: #a9e4ed;
+        font-size: 15px;
+        letter-spacing: 3px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .header h1 {
+        margin: 15px 0 8px;
+        font-size: 32px;
+    }
+
+    .header p {
+        margin: 5px 0;
+        color: #e1f1f5;
+    }
+
+    .project-info {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+    }
+
+    .info-tag {
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+    }
+
+    .content {
+        padding: 35px;
+    }
+
+    .intro {
+        background: #eef8fb;
+        border-left: 5px solid #16849a;
+        padding: 18px 22px;
+        border-radius: 6px;
+        margin-bottom: 35px;
+    }
+
+    .section {
+        margin-bottom: 40px;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid #dce8ef;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+
+    .number {
+        background: #176b87;
+        color: white;
+        min-width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    h2 {
+        color: #123957;
+        margin: 0;
+        font-size: 23px;
+    }
+
+    h3 {
+        color: #176b87;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 17px;
+    }
+
+    p {
+        margin-top: 8px;
+    }
+
+    .phase-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .phase-card {
+        border: 1px solid #dce7ed;
+        border-top: 4px solid #16849a;
+        border-radius: 9px;
+        padding: 20px;
+        background: #fbfdfe;
+    }
+
+    .phase-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .phase-label {
+        color: #16849a;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .outcome {
+        margin-top: 12px;
+        padding: 10px 12px;
+        background: #e8f5f7;
+        border-radius: 5px;
+        color: #14546a;
+        font-size: 14px;
+    }
+
+    .outcome strong {
+        color: #103e55;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    th {
+        background: #153f60;
+        color: white;
+        padding: 14px;
+        text-align: left;
+    }
+
+    td {
+        padding: 13px;
+        border-bottom: 1px solid #dce5eb;
+        vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+        background: #f0f6f9;
+    }
+
+    tr:hover {
+        background: #e5f2f5;
+    }
+
+    .testing-list {
+        display: grid;
+        gap: 13px;
+    }
+
+    .testing-item {
+        display: flex;
+        gap: 15px;
+        padding: 16px;
+        background: #f3f7fa;
+        border-radius: 8px;
+        border-left: 4px solid #16849a;
+    }
+
+    .testing-item h3 {
+        margin-bottom: 4px;
+    }
+
+    .test-number {
+        background: #d5edf1;
+        color: #14546a;
+        font-weight: bold;
+        min-width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .training-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .training-card {
+        background: #f3f7fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-bottom: 4px solid #176b87;
+    }
+
+    .training-card h3 {
+        color: #123957;
+    }
+
+    .materials {
+        margin-top: 16px;
+        padding: 17px 20px;
+        background: #e8f5f7;
+        border-radius: 8px;
+    }
+
+    .summary {
+        background: linear-gradient(135deg, #153f60, #176b87);
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    }
+
+    .summary h2 {
+        color: white;
+        margin-bottom: 12px;
+    }
+
+    .summary p {
+        color: #edf8fb;
+        margin-bottom: 0;
+    }
+
+    .footer {
+        background: #102b4e;
+        color: #c7dce8;
+        padding: 18px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+        .content {
+            padding: 22px;
+        }
+
+        .phase-grid,
+        .training-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .phase-card:last-child {
+            grid-column: auto;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+    }
+
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+        }
+
+        .document {
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .phase-card,
+        .training-card,
+        .testing-item,
+        table tr {
+            break-inside: avoid;
+        }
+
+        .section {
+            break-inside: auto;
+        }
+
+        .header,
+        .summary,
+        th,
+        .footer {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="document">
+
+    <header class="header">
+        <div class="company">System Analysts Consulting Corp.</div>
+        <h1>Week 5: Implementation Planning</h1>
+        <p>Ride-Sharing Application Project</p>
+
+        <div class="project-info">
+            <span class="info-tag">Group 3</span>
+            <span class="info-tag">Weekly Group Assignment</span>
+            <span class="info-tag">November 2026</span>
+        </div>
+    </header>
+
+    <main class="content">
+
+        <div class="intro">
+            <strong>Project Overview</strong>
+            <p>The primary objective of this Implementation Plan is to transition the Ride-Sharing Application from a Development/Design Stage to an Operational/Useful State. We are going to implement the application in phases as opposed to implementing all components simultaneously. With this methodology the Team has ample opportunity to build the application, test each component, address issues with the application, and prepare the user base prior to the complete Launch.</p>
+        </div>
+
+        <!-- SECTION 1 -->
+
+        <section class="section">
+            <div class="section-heading">
+                <span class="number">01</span>
+                <h2>Phased Implementation Plan</h2>
+            </div>
+
+            <p>The Five-Phase Implementation Plan was developed in an incremental manner. Each phase is built upon previous phases so we can move toward a successful product launch.</p>
+
+            <div class="phase-grid">
+
+                <div class="phase-card">
+                    <div class="phase-label">Phase 1</div>
+                    <h3>System Development and Setup</h3>
+                    <p>In Phase I, we are going to focus on creating all of the main components for the application. These main components will be: registering as a rider; signing in as a driver; sending out ride requests; assigning rides to drivers; utilizing GPS technology for real time tracking; processing payments; and keeping track of ride history. We will create the application, but we will also develop the database that will allow each system to communicate effectively.</p>
+                    <div class="outcome">
+                        <strong>Expected Outcome:</strong>Application working with  features developed and ready for testing.</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-label">Phase 2</div>
+                    <h3>Initial Testing and Evaluation</h3>
+                    <p>Once we've developed all of the main components of the app, it's time to begin testing our new app. In doing so, we'll determine if the Account Creation Function, Ride Request Function, Driver Assignment Function, GPS Component and Payment Processing Function all work as they were intended.</p>
+                    <div class="outcome">
+                        <strong>Expected Outcome:</strong>Stable application with significant problems identified and addressed.</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-label">Phase 3</div>
+                    <h3>Pilot Implementation</h3>
+                    <p>Before  debut the app to everyone, we will test it with a small number of both riders and drivers in order to see how well the app works as expected under normal conditions. Also during this time, we will get feedback from our pilots on whether they think each feature is user friendly. Before we roll out the app to everyone, we will test it with a small number of both riders and drivers in order to see how well the app works as expected under normal conditions. Also during this time, we will get feedback from our pilots on whether they think each feature is user friendly.</p>
+                    <div class="outcome">
+                        <strong>Expected Outcome:</strong>realistic user experience and improvements based on users experiences.</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-label">Phase 4</div>
+                    <h3>Full Implementation and Launch</h3>
+                    <p>At the end of the pilot program, as well as after addressing most of the concerns that arose from the testing phase, the SACC app will be released to all users in the area. The System (SACC) will continuously assess how well the System is working; provide assistance with problems or concerns that have been reported by users, etc.</p>
+                    <div class="outcome">
+                        <strong>Expected Outcome:</strong>fully launched ride-sharing application available to passengers/driver(s).</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-label">Phase 5</div>
+                    <h3>Ongoing Maintenance and Improvements</h3>
+                    <p>
+                        Implementation does not end once the application
+                        is launched. The system will need regular maintenance,
+                        security updates, performance checks, and future
+                        improvements. User feedback will help identify
+                        features that may need to be changed or added.
+                    </p>
+                    <div class="outcome">
+                        <strong>Expected Outcome:</strong> A reliable
+                        application that continues to meet user needs
+                        over time.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2 -->
+
+        <section class="section">
+            <div class="section-heading">
+                <span class="number">02</span>
+                <h2>Risk Management Plan</h2>
+            </div>
+
+            <p>All of our new programs have possible threats. Our ride-sharing program will include user's personal info (for example name, address) and/or their location (pick-up / drop-off points) as well as some type of financial exchange (credit cards etc.) so it is necessary to expect how these could affect users.</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Potential Risk</th>
+                            <th>Possible Impact</th>
+                            <th>Prevention or Response</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><strong>Data Security Breach</strong></td>
+                            <td>Data security breaches exposure of personal and payment information. </td>
+                            <td>Secure authentication methods used; data encryption applied; regular security checks conducted</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>GPS or Location Errors</strong></td>
+                            <td>GPS or location errors difficulty for drivers to locate riders or pickup locations</td>
+                            <td>GPS accuracy tested prior to launch; option provided for rider to correct pickup location</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Payment Processing Failure</strong></td>
+                            <td>Failed payment transactions riders may be charged incorrectly or unable to complete payments</td>
+                            <td>Payment transaction test conducted prior to launch; process established for reporting/correcting payment issues.</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>System Downtime</strong></td>
+                            <td>Passengers and drivers may temporarily lose access to the app.</td>
+                            <td>System performance monitored continuously; backups created and recovery procedures established</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Incorrect Driver Matching</strong></td>
+                            <td>Incorrect driver matches a passenger may be assigned to unavailable/unsuitable driver. </td>
+                            <td>Driver availability tested prior to launch; functionality of ride-matching tested prior to launch.</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Low User Adoption</strong></td>
+                            <td>Low adoption rates of application riders/driver(s) may be reluctant to utilize application</td>
+                            <td>Instructions clearly outlined; rider/driver support established; easy-to-follow registration instructions provided</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>The team must continuously review these risks during development and implementation. Should a problem arise, it must be documented, assigned to an applicable team member and followed-up on until resolution is achieved. Establishing a plan prior to problems arising should minimize disruptions caused by problems that may have otherwise become larger-scale issues</p>
+        </section>
+
+        <!-- SECTION 3 -->
+
+        <section class="section">
+            <div class="section-heading">
+                <span class="number">03</span>
+                <h2>Draft Testing Strategy</h2>
+            </div>
+
+            <p>The objective of our testing strategy is to insure that the ride-sharing application works appropriately; safeguards user data; and provides an easy-to-use interface for riders/drivers.</p>
+
+            <div class="testing-list">
+
+                <div class="testing-item">
+                    <span class="test-number">1</span>
+                    <div>
+                        <h3>Unit Testing</h3>
+                        <p>Each individual feature will be tested individually. For example: creating account/login/request ride/fare calculation/payment processing.</p>
+                    </div>
+                </div>
+
+                <div class="testing-item">
+                    <span class="test-number">2</span>
+                    <div>
+                        <h3>Integration Testing</h3>
+                        <p>Features will be tested collectively. When a rider requests a ride, the application should find an available driver; forward the request; confirm the ride; and update trip information accordingly.</p>
+                    </div>
+                </div>
+
+                <div class="testing-item">
+                    <span class="test-number">3</span>
+                    <div>
+                        <h3>System Testing</h3>
+                        <p>Entire application tested collectively. Check for correct operation among all primary functions. Example: system performance/navigating/application security/trip request processes.</p>
+                    </div>
+                </div>
+
+                <div class="testing-item">
+                    <span class="test-number">4</span>
+                    <div>
+                        <h3>Security Testing</h3>
+                        <p>The team will test how the application protects personal data of riders and drivers. Examples: login security/access permissions/sensitive financial transaction handling.</p>
+                    </div>
+                </div>
+
+                <div class="testing-item">
+                    <span class="test-number">5</span>
+                    <div>
+                        <h3>User Acceptance Testing</h3>
+                        <p>Small number of riders/drivers will attempt utilizing the application. Provide Feedback. Perform common tasks such as create account/request ride/track driver/complete payment.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <p>Results from testing will be recorded. Defects noted will be evaluated/repaired prior to full launch. The application cannot proceed to the next implementation phase until serious defects/issues have been repaired/resolved and primary features are operating accurately.</p>
+        </section>
+
+        <!-- SECTION 4 -->
+
+        <section class="section">
+            <div class="section-heading">
+                <span class="number">04</span>
+                <h2>Draft User Training Plan</h2>
+            </div>
+
+            <p>Preparing users is also an essential component of implementing an effective solution. We wish for riders/drivers to comprehend how to operate the application without being overwhelmed by numerous features.</p>
+
+            <div class="training-grid">
+
+                <div class="training-card">
+                    <h3>Passenger Training</h3>
+                    <p>There are some basic steps that passengers will be instructed in order to utilize the service. These include registering, creating an account with us, entering pick-up and drop-off locations, requesting a trip, tracking your assigned driver, and paying for the completed trip.</p>
+                </div>
+
+                <div class="training-card">
+                    <h3>Driver Training</h3>
+                    <p>In addition to the above-mentioned training of the passenger; drivers also will need to be trained in the use of our service. This includes setting up an account (or profile), indicating when they are available to drive, whether they will accept or decline any new ride requests, navigating by GPS, and once at the completion of each trip.</p>
+                </div>
+
+            </div>
+
+            <div class="materials">
+                <h3>Training Materials</h3>
+                <p>The team could create a few easy-to-use resources to help people learn how to use the product such as a short user manual, a list of commonly asked questions, pictures (screenshots), or even short video tutorials that teach basic functions. All of these materials should be written in an understandable way for users who have little technical knowledge.</p>
+                <strong>Training Goal:</strong>Prior to the application being launched (and for a period of time thereafter), ensure that both passengers and drivers will be at ease when utilizing the application.</div>
+        </section>
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+            <h2>Week 5 Project Summary</h2>
+            <p>Week five of our process is going to bring us a lot closer to actually implementing our plan. In addition to thinking about how we are going to develop the ride sharing application, we need to think about how we are going to test the ride sharing application, introduce it to the public (users) and keep it running after the initial launch. The most important part of this phase will be breaking down the implementation in different phases as well as developing a plan to manage risk and test all parts of the application. The development of a user education/training program will also provide an opportunity to educate both the passenger and driver on how to use the application. These are key factors that will assist SACC in moving the ride sharing project toward a successful launch.</p>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        System Analysts Consulting Corp. | Group 3 | Week 5 Implementation Planning
+    </footer>
+
+</div>
+
+
+
+</body></html>
